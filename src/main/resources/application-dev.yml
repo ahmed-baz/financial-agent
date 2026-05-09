@@ -1,0 +1,24 @@
+spring:
+  datasource:
+    url: jdbc:oracle:thin:@localhost:1521/xe
+    username: financial_agent
+    password: P@ssw0rd
+    driver-class-name: oracle.jdbc.OracleDriver
+  jpa:
+    database-platform: org.hibernate.dialect.OracleDialect
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+  ai:
+    openai:
+      api-key:
+      chat:
+        options:
+          model: gpt-4o-mini # gpt-3.5-turbo gpt-4o-mini or gpt-4o
+          temperature: 0.7
+          max-tokens: 2000
+      base-url: https://api.openai.com
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB

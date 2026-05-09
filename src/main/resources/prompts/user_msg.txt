@@ -1,0 +1,187 @@
+Analyze the attached company financial report and extract ONLY the most investment-relevant metrics required for equity investment decision-making.
+Your task is to generate STRICTLY VALID JSON matching the exact schema below.
+
+Objectives:
+Focus on the highest-value investment indicators.
+Generate a professional investment-oriented summary based ONLY on information found in the report.
+Prioritize consolidated audited figures.
+Use the latest reporting period available.
+Extract values directly from primary financial statements and notes when necessary.
+Normalize all numbers into machine-readable numeric values.
+
+
+Critical Rules:
+Return ONLY valid JSON.
+Do NOT include markdown.
+Do NOT explain anything outside the JSON.
+Do NOT add comments.
+Do NOT hallucinate facts or financial claims.
+Use null when information is unavailable.
+Never return numbers as strings.
+Preserve negative values.
+Remove commas, currency symbols, brackets, and formatting.
+Detect reporting scale:(units,thousands,millions,billions)
+Store detected scale in metadata.unit.
+Detect whether statements are audited.
+Detect reporting currency automatically.
+Detect source language automatically.
+Percentages must be numeric only.
+If multiple periods exist:use the latest period and ignore older periods unless useful for context
+Prefer:
+consolidated statements
+audited statements
+annual statements
+Validate accounting consistency where possible.
+The LLM summary fields must be grounded ONLY in extracted report data.
+Do NOT provide speculative investment advice.
+All insights must be evidence-based and derived from the report.
+Keep narrative fields concise, factual, and professional.
+
+
+Financial Mapping Intelligence:
+Recognize equivalent labels automatically.
+Revenue aliases:
+    Revenue
+    Sales
+    Net Sales
+    Operating Revenue
+
+
+Net income aliases:
+    Net Profit
+    Profit for the Year
+    Earnings After Tax
+
+Operating cash flow aliases:
+    Cash generated from operations
+    Net cash from operating activities
+
+
+Free cash flow:
+    Calculate if not explicitly stated:
+    Free Cash Flow = Operating Cash Flow - Capital Expenditure
+
+
+ROE aliases: Return on Equity
+
+Debt to equity aliases: ebt/Equity
+
+Normalization Examples:
+    "50,050.05" → 50050.05
+    "(1,245)" → -1245
+    "4.31%" → 4.31
+    "14.2x" → 14.2
+
+LLM Analysis Instructions:
+
+executive_summary:
+Provide a concise factual overview of the company’s financial performance for the reporting period.
+
+investment_thesis:
+Summarize the main investment case using report-backed financial evidence only.
+
+strengths:
+Include key positive indicators such as:
+    revenue growth
+    profitability
+    strong cash flow
+    low leverage
+    margin improvement
+    operational efficiency
+
+
+risks:
+Include material concerns found in the report such as:
+    rising debt
+    declining margins
+    high capital expenditure
+    weak liquidity
+    regulatory exposure
+    concentration risks
+
+
+growth_signals:
+Mention report-based growth indicators such as:
+    increasing revenue
+    expansion investments
+    improving earnings
+    increasing operating cash flow
+
+
+warning_signals:
+Mention observable negative indicators such as:
+    declining earnings
+    negative free cash flow
+    increasing liabilities
+    impairment losses
+    deteriorating margins
+
+investment_opinion:
+Return ONLY one of:
+    "Positive"
+    "Neutral"
+    "Cautious"
+
+Determine this strictly from the extracted financial indicators and report evidence.
+
+confidence_level:
+Numeric value between 0 and 1 representing confidence in extraction and analysis quality.
+
+about the company section:
+the symbol is the trading symbol from Tadawul
+for example:
+    Alinma Bank: 1150
+    Saudi National Bank: 1180Al
+    Rajhi Bank: 1120
+    Riyad Bank: 1010
+so make sure to use the symbol from Tadawul
+
+Required JSON Schema:
+
+{
+    "company": {
+        "name": "",
+        "symbol": "",
+        "sector": "",
+        "exchange": ""
+    },
+    "investmentSummary": {
+        "reportingPeriod": "",
+        "currency": "",
+        "marketCap": null,
+        "revenue": null,
+        "netIncome": null,
+        "operatingCashFlow": null,
+        "freeCashFlow": null,
+        "eps": null,
+        "roe": null,
+        "debtToEquity": null
+    },
+    "llmAnalysis": {
+        "executiveSummary": "",
+        "investmentThesis": "",
+        "strengths": [],
+        "risks": [],
+        "growthSignals": [],
+        "warningSignals": [],
+        "investmentOpinion": "",
+        "confidenceLevel": null
+    },
+    "metadata": {
+        "unit": "",
+        "audited": null,
+        "sourceLanguage": "",
+        "extractionConfidence": null
+    }
+}
+
+
+Final Output Constraints:
+
+Return ONLY the JSON object.
+No markdown.
+No prose.
+No explanations.
+Output must be directly parsable by standard JSON parsers.
+JSON must be valid according to the JSON Schema.
+use English language to fill the fields
